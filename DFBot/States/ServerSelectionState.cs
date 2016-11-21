@@ -20,9 +20,8 @@ namespace DFBot.States
                 new MessageType(PrefixMessage.ServerSelection.SelectServer),
                 new MessageType(PrefixMessage.ServerSelection.SwitchSocketOK),
                 new MessageType(PrefixMessage.ServerSelection.ServerIdentification),
-                new MessageType("BN"),
-                new MessageType("AV0"),
-                new MessageType(PrefixMessage.ServerSelection.PlaceQueue)
+                new MessageType(PrefixMessage.ServerSelection.PlaceQueue),
+                new MessageType(PrefixMessage.PersoSelection.PersoInfo)
             };
         }
     }

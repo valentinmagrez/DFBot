@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DFBot.Enum;
 using DFBot.Network;
 using DFBot.States;
+using System.Threading;
 
 namespace DFBot
 {
@@ -20,8 +21,8 @@ namespace DFBot
         private const int IDSERVER = 602;
         private int test = 0;
         private IDictionary<String, String> Cache = new Dictionary<String, String>();
-
         #endregion
+
         #region attributes
         /// <summary>
         /// Account link to this bot
@@ -113,21 +114,6 @@ namespace DFBot
             else if (message.StartsWith(PrefixMessage.ServerSelection.ServerIdentification))
             {
                 _socket.Send("Ai07ZMr3g5oEkTN0" + charNewLine + charNull + "AL" + charNewLine + charNull + "Af" + charNewLine + charNull);
-            /*    _socket.Send("Ak0"+charNewLine+charNull);
-            }
-            else if (message.StartsWith("BN") && test==0)
-            {
-                test++;
-                _socket.Send("AV" + charNewLine + charNull);
-            }
-            else if (message.StartsWith("AV0"))
-            {
-                _socket.Send("Agfr" + charNewLine + charNull);
-            }
-            else if (message.StartsWith("BN") && test==1)
-            {
-                test++;
-                _socket.Send("Ai07ZMr3g5oEkTN0" + charNewLine + charNull + "AL" + charNewLine + charNull);*/
             }
             else if (message.StartsWith(PrefixMessage.ServerSelection.PlaceQueue))
             {
@@ -135,16 +121,27 @@ namespace DFBot
                 string place = message.Remove(0, PrefixMessage.ServerSelection.PlaceQueue.Length);
                 Program.log.Info("Place in the queue: "+place);
 
-
-               _socket.Send("Af" + charNewLine + charNull);
-
-
-                //TODO change this
-                if (place == "1")
+                //If pace in the queue change
+                if (!Cache.ContainsKey("place") || Cache["place"] != place)
                 {
-                    //In the queue for connection, we switch state
-                    _state = new PersoSelectionState();
+                    Cache["delay"] = ((Int32)1000).ToString();
+                    //Caching the place
+                    Cache["place"] = place;
                 }
+                else
+                {
+                    Cache["delay"] = (Int32.Parse(Cache["delay"])*2).ToString();
+                }
+
+
+                Thread.Sleep(Int32.Parse(Cache["delay"]));
+
+                _socket.Send("Af" + charNewLine + charNull);
+            }
+            else if (message.StartsWith(PrefixMessage.PersoSelection.PersoInfo))
+            {
+                _state = new PersoSelectionState();
+                PersoSelection(message);
             }
             return 0;
         }
@@ -154,7 +151,25 @@ namespace DFBot
             if (message.StartsWith(PrefixMessage.PersoSelection.PersoInfo))
             {
                 _perso.ParseMessageFromServer(message);
-                _socket.Send("AS"+_perso.Id);
+                _socket.Send("AS"+_perso.Id+charNewLine+charNull);
+            }
+            else if (message.StartsWith(PrefixMessage.PersoSelection.PersoConnected))
+            {
+                _socket.Send("GC1" + charNewLine + charNull);
+            }
+            else if (message.StartsWith(PrefixMessage.PersoSelection.MapDetails))
+            {
+                _state = new InGameState();
+                _socket.Send(PrefixMessage.MapLoading.AskInfo+charNewLine+charNull);
+            }
+            return 0;
+        }
+
+        public int InGame(string message)
+        {
+            if (message.StartsWith(PrefixMessage.MapLoading.GetInfo))
+            {
+
             }
             return 0;
         }

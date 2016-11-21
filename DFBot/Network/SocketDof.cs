@@ -63,6 +63,8 @@ namespace DFBot.Network
         // The response from the remote device.
         private static String response = String.Empty;
 
+        private Thread receiveLoop;
+
         public SocketDof(string ipAdress, int port, Bot bot)
         {
             _ipAdress = ipAdress;
@@ -99,9 +101,9 @@ namespace DFBot.Network
                     new AsyncCallback(ConnectCallback), _clientSocket);
                 connectDone.WaitOne();
 
-                Thread t = new Thread(new ThreadStart(ReceiveLoop));
+                receiveLoop = new Thread(new ThreadStart(ReceiveLoop));
 
-                t.Start();
+                receiveLoop.Start();
             }
             catch (Exception e)
             {
@@ -144,6 +146,9 @@ namespace DFBot.Network
          * */
         public void SocketDeconnection()
         {
+            //Stop receiving thread
+            receiveLoop.Abort();
+            
             //Release the socket.
             _clientSocket.Shutdown(SocketShutdown.Both);
             _clientSocket.Close();
@@ -240,7 +245,7 @@ namespace DFBot.Network
                     // Get the rest of the data.
                     if (bytesRead == StateObject.BufferSize){
 
-                        Program.log.Info("Received not complete. Current data received: " + state.sb.ToString());
+                        Program.log.Info("Received not complete.");
 
                         client.BeginReceive(state.buffer, 0, StateObject.BufferSize, 0,
                             new AsyncCallback(ReceiveCallback), state);
@@ -254,7 +259,8 @@ namespace DFBot.Network
                 {
                     response = state.sb.ToString();
                     Program.log.Info("Response: " + response);
-                    var i = _messageProcessor.ProcessReceivedMessage(response);
+                    Task a = Task.Factory.StartNew(() => _messageProcessor.ProcessReceivedMessage(response));
+                    a.Wait();
 
                     // Signal that all bytes have been received.
                     receiveDone.Set();

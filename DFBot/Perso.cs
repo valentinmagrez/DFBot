@@ -78,7 +78,8 @@ namespace DFBot
             string[] characterData = messagesFromServer
                                         .Where(x => x.Split(';').Length > 1 
                                             && x.Contains(_pseudo))
-                                        .ToArray();
+                                        .First()
+                                        .Split(';');
 
             try {
 

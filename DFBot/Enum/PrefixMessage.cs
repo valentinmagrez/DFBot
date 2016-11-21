@@ -31,6 +31,16 @@ namespace DFBot.Enum
         {
             #region select perso
             public const string PersoInfo = "ALK";
+            public const string PersoConnected = "ASK";
+            public const string MapDetails = "GCK";
+            #endregion
+        }
+
+        public class MapLoading
+        {
+            #region map loading
+            public const string AskInfo = "GI";
+            public const string GetInfo = "GM";
             #endregion
         }
     }

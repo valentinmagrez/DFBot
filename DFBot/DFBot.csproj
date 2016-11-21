@@ -34,8 +34,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.86.0.518, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SwfDotNet.IO, Version=0.9.0.27050, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SwfDotNet.IO.1.0.0.1\lib\net40-full\SwfDotNet.IO.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -53,25 +61,40 @@
     <Compile Include="Action\ConnectPerso\SelectPersoCommand.cs" />
     <Compile Include="Action\ConnectPerso\SelectServerCommand.cs" />
     <Compile Include="Action\ConnectPerso\ConnectionCommand.cs" />
+    <Compile Include="Action\InGame\MapCommand.cs" />
     <Compile Include="Bot.cs" />
     <Compile Include="CommunicationThread.cs" />
-    <Compile Include="Engine.cs" />
     <Compile Include="Enum\PrefixMessage.cs" />
+    <Compile Include="Game\Map.cs" />
+    <Compile Include="Game\Harvestable.cs" />
+    <Compile Include="Game\Monster.cs" />
+    <Compile Include="Game\MonsterGroup.cs" />
+    <Compile Include="Lib\SwfUnpacker.cs" />
     <Compile Include="Network\Message\MessageProcess.cs" />
     <Compile Include="Network\Message\MessageType.cs" />
     <Compile Include="Network\SocketDof.cs" />
     <Compile Include="Perso.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="States\InGameState.cs" />
     <Compile Include="States\NotConnectedState.cs" />
     <Compile Include="States\PersoSelectionState.cs" />
     <Compile Include="States\ServerSelectionState.cs" />
     <Compile Include="States\State.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="info.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

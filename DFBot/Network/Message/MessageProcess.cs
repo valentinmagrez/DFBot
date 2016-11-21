@@ -15,23 +15,12 @@ namespace DFBot.Network.Message
     {
 
         public Bot _bot;
-
-        private Queue<string> _messageQueue;
-
+        
         public MessageProcess(Bot bot)
         {
             _bot = bot;
-            //Thread t = new Thread(new ThreadStart());
         }
-
-        private void loop()
-        {
-            while (Thread.CurrentThread.IsAlive)
-            {
-
-            }
-        }
-
+        
         /// <summary>
         /// Compute the message received by the socket
         /// </summary>
@@ -74,7 +63,7 @@ namespace DFBot.Network.Message
                 if (messageReceived.StartsWith(m.Value))
                 {
                     s.Command.AttachBot(_bot);
-                    s.Command.Execute(messageReceived);
+                    return s.Command.Execute(messageReceived);
                 }
             }
             return 0;

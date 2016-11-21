@@ -17,6 +17,8 @@ namespace DFBot.States
             Command = new SelectPersoCommand();
             MessagesKnown = new List<MessageType>{
                 new MessageType(PrefixMessage.PersoSelection.PersoInfo),
+                new MessageType(PrefixMessage.PersoSelection.PersoConnected),
+                new MessageType(PrefixMessage.PersoSelection.MapDetails)
             };
         }
     }
