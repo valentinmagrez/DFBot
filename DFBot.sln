@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFBot", "DFBot\DFBot.csproj
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2219C1BC-DC7A-4ABF-BF68-5C5B2BB451ED}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DFBot.Tests", "DFBot.Tests\DFBot.Tests.csproj", "{E4DABE25-60DD-4D0D-A1E5-CE9F5E8491D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +19,10 @@ Global
 		{2532D685-2E5C-40CA-886F-97F3D6E0211A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2532D685-2E5C-40CA-886F-97F3D6E0211A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2532D685-2E5C-40CA-886F-97F3D6E0211A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4DABE25-60DD-4D0D-A1E5-CE9F5E8491D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4DABE25-60DD-4D0D-A1E5-CE9F5E8491D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4DABE25-60DD-4D0D-A1E5-CE9F5E8491D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4DABE25-60DD-4D0D-A1E5-CE9F5E8491D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
