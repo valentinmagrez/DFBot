@@ -1,54 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DFBot
 {
     public class Account
     {
-        #region attributes
-        /// <summary>
-        /// Identifier for the connection
-        /// </summary>
-        private string _pseudo;
+        public string Pseudo { get; set; }
 
-        public string Pseudo
-        {
-            get { return _pseudo; }
-            set { _pseudo = value; }
-        }
+        public string Password { get; set; }
 
-        /// <summary>
-        /// Password for the connection
-        /// </summary>
-        private string _password;
-
-        public string Password
-        {
-            get { return _password; }
-            set { _password = value; }
-        }
-
-        /// <summary>
-        /// Key provided by the server to log in
-        /// </summary>
-        private string _key;
-
-        public string Key
-        {
-            set { _key = value; }
-        }
-        #endregion
+        public string Key { get; set; }
 
         public Account(string pseudo, string password)
         {
-            _pseudo = pseudo;
-            _password = password;
+            Pseudo = pseudo;
+            Password = password;
         }
 
-        #region public methods
         /// <summary>
         /// Encrypt the password for sending to the server
         /// </summary>
@@ -57,7 +24,7 @@ namespace DFBot
         {
             Program.log.Info("Password encryption");
 
-            if (_key!=null)
+            if (Key!=null)
             {
                 //TODO clean this code
                 string str1 = "#1";
@@ -129,12 +96,12 @@ namespace DFBot
                     "_"
                     };
                 int num1 = 0;
-                int num2 = _password.Length;
+                int num2 = Password.Length;
                 int Start = num1;
                 while (Start < num2)
                 {
-                    int num3 = (int)_password[Start];
-                    int num4 = (int)_key[Start];
+                    int num3 = (int)Password[Start];
+                    int num4 = (int)Key[Start];
                     int num5 = checked((int)Math.Floor(unchecked((double)num3 / 16.0)));
 
                     int num6 = num3 % 16;
@@ -153,11 +120,5 @@ namespace DFBot
                 throw new NullReferenceException();
             }
         }
-        #endregion
-
-        #region private methods
-
-
-        #endregion
     }
 }

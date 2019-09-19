@@ -90,7 +90,7 @@ namespace DFBot.Network
             try
             {
                 // Establish the remote endpoint for the socket.
-                IPEndPoint remoteEP = new IPEndPoint(IPAddress.Parse(_ipAdress), _port);
+                var remoteEP = new IPEndPoint(IPAddress.Parse(_ipAdress), _port);
 
                 // Create a TCP/IP socket.
                 _clientSocket = new Socket(AddressFamily.InterNetwork,

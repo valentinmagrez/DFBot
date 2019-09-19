@@ -1,94 +1,55 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DFBot.Enum;
 using DFBot.Network;
 using DFBot.States;
 using System.Threading;
+using DFBot.Lib;
 
 namespace DFBot
 {
     public class Bot
     {
-        #region constants
-        private const char charNewLine= (char)10;
-        private const char charNull = (char)0;
-        #endregion
+        private const char CharNewLine= (char)10;
+        private const char CharNull = (char)0;
 
-        #region datatoremove
-        private const int IDSERVER = 602;
-        private int test = 0;
+        private const int IDSERVER = 601;
         private IDictionary<String, String> Cache = new Dictionary<String, String>();
-        #endregion
 
-        #region attributes
-        /// <summary>
-        /// Account link to this bot
-        /// </summary>
-        private Account _account;
+        public Account Account { get; }
 
-        public Account Account
+        public Character Character { get; }
+
+        public State State { get; set; }
+
+        public  SocketDof Socket { get; set; }
+
+        public Bot(Account account, Character character)
         {
-            get { return _account; }
+            Account = account;
+            Character = character;
         }
 
-        /// <summary>
-        /// PErso use for this bot
-        /// </summary>
-        private Perso _perso;
-
-        public Perso Perso
+        public void Init()
         {
-            get { return _perso; }
+            State = new NotConnectedState(this);
         }
 
-        /// <summary>
-        /// Current state of the bot
-        /// </summary>
-        private State _state;
-
-        public State State
-        {
-            get { return _state; }
-            set { _state = value; }
-        }
-
-        private SocketDof _socket;
-
-        public  SocketDof Socket
-        {
-            set { _socket = value; }
-        }
-
-        #endregion
-
-        public Bot(Account account, Perso perso)
-        {
-            _account = account;
-            _perso = perso;
-            this.State = new NotConnectedState();
-        }
-
-        #region public methods
         public int Connection(string message)
         {
-            //Receiving the crypting key
             if (message.StartsWith(PrefixMessage.Connection.ReceivedKey))
             {
-                //Attach the key to the account
-                _account.Key = message.Remove(0,PrefixMessage.Connection.ReceivedKey.Length);
+                Account.Key = message.Remove(0,PrefixMessage.Connection.ReceivedKey.Length);
 
-                ConnectPerso();
+                ConnectCharacter();
             }
             else if (message.StartsWith(PrefixMessage.Connection.DisconnectSomeone))
             {
-                ConnectPerso();
+                ConnectCharacter();
             }
             else if (message.StartsWith(PrefixMessage.Connection.ConnectionOk))
             {
-                _state = new ServerSelectionState();
+                State = new ServerSelectionState(this);
             }
             return 0;
         }
@@ -101,19 +62,20 @@ namespace DFBot
             }
             else if (message.StartsWith(PrefixMessage.ServerSelection.SelectServer))
             {
+                var ip = SeverIPDecrypt.Decrypt(message);
                 //Switch socket
-                _socket.ReconnectTo("80.239.173.168");
+                Socket.ReconnectTo(ip);
 
                 //Store in the cache the value for the next step
                 Cache.Add(PrefixMessage.ServerSelection.SelectServer, message.Substring(14, 7));
             }
-            else if (message.StartsWith(PrefixMessage.ServerSelection.SwitchSocketOK))
+            else if (message.StartsWith(PrefixMessage.ServerSelection.SwitchSocketOk))
             {
-                _socket.Send(PrefixMessage.ServerSelection.ServerIdentification + Cache[PrefixMessage.ServerSelection.SelectServer] + charNewLine + charNull);
+                Socket.Send(PrefixMessage.ServerSelection.ServerIdentification + Cache[PrefixMessage.ServerSelection.SelectServer] + CharNewLine + CharNull);
             }
             else if (message.StartsWith(PrefixMessage.ServerSelection.ServerIdentification))
             {
-                _socket.Send("Ai07ZMr3g5oEkTN0" + charNewLine + charNull + "AL" + charNewLine + charNull + "Af" + charNewLine + charNull);
+                Socket.Send("Ai07ZMr3g5oEkTN0" + CharNewLine + CharNull + "AL" + CharNewLine + CharNull + "Af" + CharNewLine + CharNull);
             }
             else if (message.StartsWith(PrefixMessage.ServerSelection.PlaceQueue))
             {
@@ -136,11 +98,11 @@ namespace DFBot
 
                 Thread.Sleep(Int32.Parse(Cache["delay"]));
 
-                _socket.Send("Af" + charNewLine + charNull);
+                Socket.Send("Af" + CharNewLine + CharNull);
             }
-            else if (message.StartsWith(PrefixMessage.PersoSelection.PersoInfo))
+            else if (message.StartsWith(PrefixMessage.CharacterSelection.PersoInfo))
             {
-                _state = new PersoSelectionState();
+                State = new CharacterSelectionState(this);
                 PersoSelection(message);
             }
             return 0;
@@ -148,19 +110,19 @@ namespace DFBot
 
         public int PersoSelection(string message)
         {
-            if (message.StartsWith(PrefixMessage.PersoSelection.PersoInfo))
+            if (message.StartsWith(PrefixMessage.CharacterSelection.PersoInfo))
             {
-                _perso.ParseMessageFromServer(message);
-                _socket.Send("AS"+_perso.Id+charNewLine+charNull);
+                Character.ParseMessageFromServer(message);
+                Socket.Send("AS"+Character.Id+CharNewLine+CharNull);
             }
-            else if (message.StartsWith(PrefixMessage.PersoSelection.PersoConnected))
+            else if (message.StartsWith(PrefixMessage.CharacterSelection.PersoConnected))
             {
-                _socket.Send("GC1" + charNewLine + charNull);
+                Socket.Send("GC1" + CharNewLine + CharNull);
             }
-            else if (message.StartsWith(PrefixMessage.PersoSelection.MapDetails))
+            else if (message.StartsWith(PrefixMessage.CharacterSelection.MapDetails))
             {
-                _state = new InGameState();
-                _socket.Send(PrefixMessage.MapLoading.AskInfo+charNewLine+charNull);
+                State = new InGameState(this);
+                Socket.Send(PrefixMessage.MapLoading.AskInfo+CharNewLine+CharNull);
             }
             return 0;
         }
@@ -174,18 +136,14 @@ namespace DFBot
             return 0;
         }
 
-        #endregion
-
-        #region private method
-        private void ConnectPerso()
+        private void ConnectCharacter()
         {
-            Program.log.Info("Account connection attemp ....");
+            Program.log.Info("Account connection attempt ....");
             try
             {
-                //Connection attempt
-                string encryptedPassword = _account.EncryptionPassword();
-                _socket.Send("1.29.1" + charNewLine + charNull);
-                _socket.Send(_account.Pseudo + charNewLine + encryptedPassword + charNewLine + charNull + "Af" + charNewLine + charNull);
+                var encryptedPassword = Account.EncryptionPassword();
+                Socket.Send("1.29.1" + CharNewLine + CharNull);
+                Socket.Send(Account.Pseudo + CharNewLine + encryptedPassword + CharNewLine + CharNull + "Af" + CharNewLine + CharNull);
             }
             catch (NullReferenceException e)
             {
@@ -197,8 +155,7 @@ namespace DFBot
         private void SelectServer()
         {
             Program.log.Info("Server selection ...");
-            _socket.Send(PrefixMessage.ServerSelection.SelectServer + IDSERVER.ToString() + charNewLine + charNull);
+            Socket.Send(PrefixMessage.ServerSelection.SelectServer + IDSERVER + CharNewLine + CharNull);
         }
-        #endregion
     }
 }

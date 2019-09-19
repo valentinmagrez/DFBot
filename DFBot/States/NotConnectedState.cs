@@ -1,20 +1,16 @@
-﻿using DFBot.Action.ConnectPerso;
-using DFBot.Enum;
+﻿using DFBot.Enum;
 using DFBot.Network.Message;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DFBot.Action.ConnectChar;
 
 namespace DFBot.States
 {
     public class NotConnectedState : State
     {
-        public NotConnectedState()
+        public NotConnectedState(Bot bot)
         {
             Value = StateType.NotConnected;
-            Command = new ConnectionCommand();
+            Command = new ConnectionCommand(bot);
             MessagesKnown = new List<MessageType>{
                 new MessageType(PrefixMessage.Connection.ReceivedKey),
                 new MessageType(PrefixMessage.Connection.DisconnectSomeone),

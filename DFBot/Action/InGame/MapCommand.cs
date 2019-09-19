@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DFBot.Action.InGame
+﻿namespace DFBot.Action.InGame
 {
-    public class MapCommand : Command
+    public class MapCommand : ICommand
     {
         private Bot _bot;
 
@@ -15,14 +9,9 @@ namespace DFBot.Action.InGame
             _bot = bot;
         }
 
-        public int Execute(string message)
+        public void Execute(string message)
         {
-            return _bot.InGame(message);
-        }
-
-        public void AttachBot(Bot bot)
-        {
-            _bot = bot;
+            _bot.InGame(message);
         }
     }
 }

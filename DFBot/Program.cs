@@ -1,14 +1,4 @@
-﻿using DFBot.Action.ConnectPerso;
-using DFBot.Network;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Xml;
-using System.IO;
-using System.Text;
+﻿using DFBot.Network;
 using System.Xml.Linq;
 
 namespace DFBot
@@ -26,7 +16,7 @@ namespace DFBot
         private static void LoadConfig()
         {
 
-            XElement bot = XElement.Load("info.xml").Element("bot");
+            var bot = XElement.Load("info.xml").Element("bot");
 
             _account = bot.Element("account").Element("identifiant").Value;
             _pwd = bot.Element("account").Element("password").Value;
@@ -36,14 +26,15 @@ namespace DFBot
         static void Main(string[] args)
         {
             LoadConfig();
-            Account account = new Account(_account, _pwd);
-            Perso perso = new Perso(_pseudo);
+            var account = new Account(_account, _pwd);
+            var perso = new Character(_pseudo);
 
-            Bot bot = new Bot(account, perso);
+            var bot = new Bot(account, perso);
+            bot.Init();
 
-            SocketDof s = new SocketDof("80.239.173.166", 443, bot);
+            var s = new SocketDof("34.251.172.139", 443, bot);
             log.Info("Application is working");
-            CommunicationThread t = new CommunicationThread(s);
+            var t = new CommunicationThread(s);
 
             t.launch();
         }

@@ -1,27 +1,23 @@
-﻿using DFBot.Action.ConnectPerso;
-using DFBot.Enum;
+﻿using DFBot.Enum;
 using DFBot.Network.Message;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using DFBot.Action.ConnectChar;
 
 namespace DFBot.States
 {
     public class ServerSelectionState : State
     {
-        public ServerSelectionState()
+        public ServerSelectionState(Bot bot)
         {
             Value = StateType.Connected;
-            Command = new SelectServerCommand();
+            Command = new SelectServerCommand(bot);
             MessagesKnown = new List<MessageType>{
                 new MessageType(PrefixMessage.ServerSelection.ServersInfo),
                 new MessageType(PrefixMessage.ServerSelection.SelectServer),
-                new MessageType(PrefixMessage.ServerSelection.SwitchSocketOK),
+                new MessageType(PrefixMessage.ServerSelection.SwitchSocketOk),
                 new MessageType(PrefixMessage.ServerSelection.ServerIdentification),
                 new MessageType(PrefixMessage.ServerSelection.PlaceQueue),
-                new MessageType(PrefixMessage.PersoSelection.PersoInfo)
+                new MessageType(PrefixMessage.CharacterSelection.PersoInfo)
             };
         }
     }

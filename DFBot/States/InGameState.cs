@@ -11,10 +11,10 @@ namespace DFBot.States
 {
     public class InGameState : State
     {
-        public InGameState()
+        public InGameState(Bot bot)
         {
             Value = StateType.InGame;
-            Command = new MapCommand();
+            Command = new MapCommand(bot);
             MessagesKnown = new List<MessageType>{
                 new MessageType(PrefixMessage.MapLoading.GetInfo)
             };

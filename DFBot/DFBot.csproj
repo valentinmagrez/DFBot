@@ -38,9 +38,8 @@
       <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="SwfDotNet.IO, Version=0.9.0.27050, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SwfDotNet.IO.1.0.0.1\lib\net40-full\SwfDotNet.IO.dll</HintPath>
@@ -58,9 +57,9 @@
   <ItemGroup>
     <Compile Include="Account.cs" />
     <Compile Include="Action\Command.cs" />
-    <Compile Include="Action\ConnectPerso\SelectPersoCommand.cs" />
-    <Compile Include="Action\ConnectPerso\SelectServerCommand.cs" />
-    <Compile Include="Action\ConnectPerso\ConnectionCommand.cs" />
+    <Compile Include="Action\ConnectChar\SelectCharacterCommand.cs" />
+    <Compile Include="Action\ConnectChar\SelectServerCommand.cs" />
+    <Compile Include="Action\ConnectChar\ConnectionCommand.cs" />
     <Compile Include="Action\InGame\MapCommand.cs" />
     <Compile Include="Bot.cs" />
     <Compile Include="CommunicationThread.cs" />
@@ -69,16 +68,17 @@
     <Compile Include="Game\Harvestable.cs" />
     <Compile Include="Game\Monster.cs" />
     <Compile Include="Game\MonsterGroup.cs" />
+    <Compile Include="Lib\SeverIPDecrypt.cs" />
     <Compile Include="Lib\SwfUnpacker.cs" />
     <Compile Include="Network\Message\MessageProcess.cs" />
     <Compile Include="Network\Message\MessageType.cs" />
     <Compile Include="Network\SocketDof.cs" />
-    <Compile Include="Perso.cs" />
+    <Compile Include="Character.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="States\InGameState.cs" />
     <Compile Include="States\NotConnectedState.cs" />
-    <Compile Include="States\PersoSelectionState.cs" />
+    <Compile Include="States\CharacterSelectionState.cs" />
     <Compile Include="States\ServerSelectionState.cs" />
     <Compile Include="States\State.cs" />
   </ItemGroup>
@@ -90,11 +90,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="info.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

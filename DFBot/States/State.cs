@@ -1,10 +1,6 @@
 ﻿using DFBot.Action;
 using DFBot.Network.Message;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DFBot.States
 {
@@ -19,28 +15,10 @@ namespace DFBot.States
 
     public class State
     {
+        public StateType Value { get; protected set; }
 
-        private StateType _value;
-        public StateType Value
-        {
-            get { return _value; }
-            protected set { _value = value; }
-        }
+        public List<MessageType> MessagesKnown { get; protected set; } = new List<MessageType>();
 
-        private List<MessageType> _messagesKnown = new List<MessageType>();
-        public List<MessageType> MessagesKnown 
-        {
-            get { return _messagesKnown; }
-            protected set { _messagesKnown = value; }
-        }
-        
-        private Command _command;
-        public Command Command
-        {
-            get { return _command; }
-            protected set { _command = value; }
-        }
-
-
+        public ICommand Command { get; protected set; }
     }
 }

@@ -1,24 +1,15 @@
-﻿using DFBot.Action;
-using DFBot.Action.ConnectPerso;
-using DFBot.Enum;
-using DFBot.States;
-using System;
-using System.Collections.Generic;
+﻿using DFBot.States;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DFBot.Network.Message
 {
     public class MessageProcess
     {
-
-        public Bot _bot;
+        public Bot Bot { get; set; }
         
         public MessageProcess(Bot bot)
         {
-            _bot = bot;
+            Bot = bot;
         }
         
         /// <summary>
@@ -27,11 +18,11 @@ namespace DFBot.Network.Message
         /// <param name="messageReceived"></param>
         public int ProcessReceivedMessage(string messageReceived)
         {
-            string[] separatedData = DecomposeMessage(messageReceived);
+            var separatedData = DecomposeMessage(messageReceived);
 
-            foreach (string data in separatedData)
+            foreach (var data in separatedData)
             {
-                var i=ProcessEachMessageIndividually(data);
+                ProcessEachMessageIndividually(data);
             }
 
             return 0;
@@ -53,20 +44,20 @@ namespace DFBot.Network.Message
         /// Analyse one message and decompose it into 
         /// a Message object
         /// </summary>
-        /// <param name="message">Message received by the socket</param>
-        private int ProcessEachMessageIndividually(string messageReceived)
+        /// <param name="messageReceived">Message received by the socket</param>
+        private void ProcessEachMessageIndividually(string messageReceived)
         {
-            State s = _bot.State;
+            var s = Bot.State;
 
-            foreach (MessageType m in s.MessagesKnown)
+            foreach (var m in s.MessagesKnown)
             {
-                if (messageReceived.StartsWith(m.Value))
-                {
-                    s.Command.AttachBot(_bot);
-                    return s.Command.Execute(messageReceived);
-                }
+                if (!messageReceived.StartsWith(m.Value))
+                    continue;
+
+                s.Command.Execute(messageReceived);
+
+                return;
             }
-            return 0;
         }
 
         public string BuildMessage(State state, string content)
