@@ -69,7 +69,7 @@
     <Compile Include="Game\Monster.cs" />
     <Compile Include="Game\MonsterGroup.cs" />
     <Compile Include="Lib\SeverIPDecrypt.cs" />
-    <Compile Include="Lib\SwfUnpacker.cs" />
+    <Compile Include="Map\MapLoader.cs" />
     <Compile Include="Network\Message\MessageProcess.cs" />
     <Compile Include="Network\Message\MessageType.cs" />
     <Compile Include="Network\SocketDof.cs" />
