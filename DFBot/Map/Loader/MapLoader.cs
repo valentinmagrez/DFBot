@@ -8,12 +8,26 @@ namespace DFBot.Map.Loader
 {
     public class MapLoader
     {
-        public void LoadMap(string mapId, string indice)
+        public string LoadMap(string mapId, string indice)
         {
             var mapFilesPaths = new MapFilesPaths(mapId, indice);
             mapFilesPaths.CreateLocalMapDirectoryIfNotExist();
 
-            UnpackSwfFileInLocalMapDirectory(mapFilesPaths);
+            return GetUnpackingMapData(mapFilesPaths);
+        }
+
+        private string GetUnpackingMapData(MapFilesPaths mapFilesPaths)
+        {
+            if (!File.Exists(mapFilesPaths.UnpackedFilePath))
+                UnpackSwfFileInLocalMapDirectory(mapFilesPaths);
+
+            var result = string.Empty;
+            using (var reader = new StreamReader(mapFilesPaths.UnpackedFilePath))
+            {
+                result = reader.ReadLine();
+            }
+
+            return result;
         }
 
         public bool UnpackSwfFileInLocalMapDirectory(MapFilesPaths mapFilesPaths)
