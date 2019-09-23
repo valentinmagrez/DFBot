@@ -5,6 +5,7 @@ using DFBot.Network;
 using DFBot.States;
 using System.Threading;
 using DFBot.Lib;
+using DFBot.Map;
 
 namespace DFBot
 {
@@ -15,20 +16,20 @@ namespace DFBot
 
         private const int IDSERVER = 601;
         private IDictionary<String, String> Cache = new Dictionary<String, String>();
-
-        public Account Account { get; }
-
-        public Character Character { get; }
-
-        public State State { get; set; }
-
-        public  SocketDof Socket { get; set; }
+        private MapLoader _mapLoader = new MapLoader();
 
         public Bot(Account account, Character character)
         {
             Account = account;
             Character = character;
         }
+        public Account Account { get; }
+
+        public Character Character { get; }
+
+        public State State { get; set; }
+
+        public SocketDof Socket { get; set; }
 
         public void Init()
         {
@@ -131,7 +132,12 @@ namespace DFBot
         {
             if (message.StartsWith(PrefixMessage.MapLoading.GetInfo))
             {
+                var data = message.Split('|');
+                var idMap = data[1];
+                var botNumber = data[2];
+                var key = data[3];
 
+                var unpackMapData = _mapLoader.LoadMap(idMap, botNumber, key);
             }
             return 0;
         }

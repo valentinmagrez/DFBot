@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DFBot.Map.Loader
+namespace DFBot.Map
 {
     public class MapDataUncompressed
     {

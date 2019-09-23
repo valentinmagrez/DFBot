@@ -69,9 +69,11 @@
     <Compile Include="Game\Monster.cs" />
     <Compile Include="Game\MonsterGroup.cs" />
     <Compile Include="Lib\SeverIPDecrypt.cs" />
-    <Compile Include="Map\Loader\MapDataUncompressed.cs" />
-    <Compile Include="Map\Loader\MapFilesPaths.cs" />
-    <Compile Include="Map\Loader\MapLoader.cs" />
+    <Compile Include="Map\MapDataUncompressed.cs" />
+    <Compile Include="Map\MapDecipherer.cs" />
+    <Compile Include="Map\MapFilesPaths.cs" />
+    <Compile Include="Map\MapLoader.cs" />
+    <Compile Include="Map\MapUnpacker.cs" />
     <Compile Include="Network\Message\MessageProcess.cs" />
     <Compile Include="Network\Message\MessageType.cs" />
     <Compile Include="Network\SocketDof.cs" />

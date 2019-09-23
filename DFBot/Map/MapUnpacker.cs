@@ -4,11 +4,11 @@ using SwfDotNet.IO;
 using SwfDotNet.IO.ByteCode;
 using SwfDotNet.IO.Tags;
 
-namespace DFBot.Map.Loader
+namespace DFBot.Map
 {
-    public class MapLoader
+    public class MapUnpacker
     {
-        public string LoadMap(string mapId, string indice)
+        public string GetUnpackedMapData(string mapId, string indice)
         {
             var mapFilesPaths = new MapFilesPaths(mapId, indice);
             mapFilesPaths.CreateLocalMapDirectoryIfNotExist();
@@ -21,7 +21,7 @@ namespace DFBot.Map.Loader
             if (!File.Exists(mapFilesPaths.UnpackedFilePath))
                 UnpackSwfFileInLocalMapDirectory(mapFilesPaths);
 
-            var result = string.Empty;
+            string result;
             using (var reader = new StreamReader(mapFilesPaths.UnpackedFilePath))
             {
                 result = reader.ReadLine();
@@ -30,7 +30,7 @@ namespace DFBot.Map.Loader
             return result;
         }
 
-        public bool UnpackSwfFileInLocalMapDirectory(MapFilesPaths mapFilesPaths)
+        private bool UnpackSwfFileInLocalMapDirectory(MapFilesPaths mapFilesPaths)
         {
             if (!File.Exists(mapFilesPaths.SwfFilePath))
                 return false;
