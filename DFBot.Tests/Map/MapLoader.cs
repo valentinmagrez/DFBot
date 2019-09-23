@@ -1,5 +1,6 @@
 using System.IO;
 using DFBot.Map;
+using DFBot.Map.Loader;
 using NFluent;
 using NUnit.Framework;
 
@@ -11,7 +12,7 @@ namespace DFBot.Tests.Map
         public void Success()
         {
             var mapLoader = new MapLoader();
-            mapLoader.LoadMap("10297", "0802221713", "");
+            mapLoader.LoadMap("10297", "0802221713");
 
             var resultFilePath = Directory.GetCurrentDirectory() + "/maps/" + "10297_0802221713X.txt";
             var result = File.ReadAllText(resultFilePath);
